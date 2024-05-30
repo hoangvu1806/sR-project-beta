@@ -1,0 +1,1 @@
+ plt.colorbar(format='%+2.0f dB')

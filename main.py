@@ -1,56 +1,19 @@
-import datetime
-import os, random, time
+import librosa
+import librosa.display
+import matplotlib.pyplot as plt
+import numpy as np
 
-FILE_PATH = 'README.md'
-script = '''
-import datetime
-import os, random, time
+# Đọc âm thanh từ tệp
+file_path = r'E:\Project Speech recognize\Data\10hzto50hztest.mp3'
+y, sr = librosa.load(file_path)
+print(librosa.load(file_path, sr=None))
+# Tính toán spectrogram
+spectrogram = librosa.feature.melspectrogram(y=y, sr=sr)
+print("MFCC: ",librosa.feature.chroma_stft(y, sr=22050))
+# Hiển thị spectrogram
+librosa.display.specshow(librosa.power_to_db(spectrogram, ref=np.max), y_axis='mel', x_axis='time')
 
-FILE_PATH = 'README.md'
-
-def push_to_github():
-    random_number = random.randint(1, 12)
-    for _ in range(random_number):
-        time.sleep(3)
-        current_time = str(datetime.datetime.now())
-        try:
-            update_file(current_time,FILE_PATH)
-            os.system('git add README.md')
-            commit_message = 'Commit - '+ current_time
-            os.system(f'git commit -m "{commit_message}"')
-            os.system(f'git push -u origin main')
-            time.sleep(2)
-            print("File pushed to GitHub successfully!")
-        except Exception as e:
-            print(f"Error: {e}")
-
-def update_file(current_time,file_path):
-    os.system('echo. > README.md')
-    os.system(f'echo "*Updated at: {current_time}" >> {file_path}')
-
-if __name__ == "__main__":
-    push_to_github()
-'''
-def push_to_github():
-    random_number = random.randint(1, 12)
-    for _ in range(random_number):
-        time.sleep(3)
-        current_time = str(datetime.datetime.now())
-        try:
-            update_file(current_time,FILE_PATH)
-            os.system('git add README.md')
-            commit_message = 'Commit - '+ current_time
-            os.system(f'git commit -m "{commit_message}"')
-            os.system(f'git push -u origin main')
-            time.sleep(2)
-            print("File pushed to GitHub successfully!")
-        except Exception as e:
-            print(f"Error: {e}")
-
-def update_file(current_time,file_path):
-    os.system('echo. > README.md')
-    os.system(f'echo "*Updated at: {current_time}" >> {file_path}')
-
-
-if __name__ == "__main__":
-    push_to_github()
+# Thêm tiêu đề và màu sắc
+plt.title('Spectrogram')
+plt.colorbar(format='%+2.0f dB')
+plt.show()
